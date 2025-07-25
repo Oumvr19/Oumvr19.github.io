@@ -8,6 +8,9 @@
 html {
     scroll-behavior: smooth;
     font-size: 16px;
+    /* Optimisation performances */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -16,6 +19,10 @@ body {
     color: #333;
     background-color: #fff;
     overflow-x: hidden;
+    /* Optimisation performances */
+    text-rendering: optimizeSpeed;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
 }
 
 /* ===== VARIABLES CSS POUR UNE MAINTENANCE FACILE ===== */
@@ -29,9 +36,14 @@ body {
     --shadow-light: 0 5px 15px rgba(0,0,0,0.08);
     --shadow-medium: 0 10px 30px rgba(0,0,0,0.12);
     --shadow-heavy: 0 20px 40px rgba(0,0,0,0.15);
-    --transition-fast: 0.2s ease;
-    --transition-medium: 0.4s ease;
-    --transition-slow: 0.6s ease;
+    /* Transitions optimisées pour la fluidité */
+    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-medium: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Easing pour les transformations */
+    --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --ease-power: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 /* ===== UTILITAIRES USER-FRIENDLY ===== */
@@ -62,7 +74,25 @@ textarea:focus {
     outline-offset: 2px;
 }
 
-/* Bouton principal avec animations fluides */
+/* Optimisations globales pour les performances */
+img {
+    max-width: 100%;
+    height: auto;
+    /* Optimisation performances */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+}
+
+/* Optimisation pour les éléments transformés */
+*[class*="hover"],
+*:hover {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+/* Bouton principal avec animations fluides optimisées */
 .btn-primary {
     display: inline-flex;
     align-items: center;
@@ -80,6 +110,10 @@ textarea:focus {
     box-shadow: var(--shadow-light);
     position: relative;
     overflow: hidden;
+    /* Optimisation performances */
+    will-change: transform, box-shadow;
+    backface-visibility: hidden;
+    transform: translateZ(0);
 }
 
 .btn-primary::before {
@@ -90,11 +124,11 @@ textarea:focus {
     width: 100%;
     height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    transition: left var(--transition-slow);
+    transition: left var(--transition-medium);
 }
 
 .btn-primary:hover {
-    transform: translateY(-3px) scale(1.05);
+    transform: translateY(-2px) scale(1.02);
     box-shadow: var(--shadow-heavy);
 }
 
@@ -103,7 +137,8 @@ textarea:focus {
 }
 
 .btn-primary:active {
-    transform: translateY(-1px) scale(1.02);
+    transform: translateY(-1px) scale(1.01);
+    transition: all var(--transition-fast);
 }
 
 /* ===== HEADER & NAVIGATION AMÉLIORÉS ===== */
@@ -188,12 +223,15 @@ textarea:focus {
     display: flex;
     list-style: none;
     gap: 0.5rem;
-    animation: slideInRight var(--transition-slow);
+    animation: slideInRight var(--transition-medium);
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     padding: 0.5rem;
     border-radius: 50px;
     border: 1px solid rgba(212, 175, 55, 0.1);
+    /* Optimisation performances */
+    will-change: transform;
+    transform: translateZ(0);
 }
 
 .nav-menu li {
@@ -212,6 +250,9 @@ textarea:focus {
     display: block;
     overflow: hidden;
     background: transparent;
+    /* Optimisation performances */
+    will-change: transform, background-color;
+    backface-visibility: hidden;
 }
 
 .nav-menu a::before {
@@ -225,7 +266,7 @@ textarea:focus {
         rgba(212, 175, 55, 0.1) 0%, 
         rgba(244, 208, 63, 0.15) 50%, 
         rgba(212, 175, 55, 0.1) 100%);
-    transition: left var(--transition-medium);
+    transition: left var(--transition-fast);
     border-radius: 25px;
 }
 
@@ -238,15 +279,15 @@ textarea:focus {
     height: 2px;
     background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
     border-radius: 1px;
-    transition: all var(--transition-medium);
+    transition: all var(--transition-fast);
     transform: translateX(-50%);
 }
 
 .nav-menu a:hover {
     color: var(--color-primary);
     background: rgba(255, 255, 255, 0.8);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.15);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.12);
 }
 
 .nav-menu a:hover::before {
@@ -281,9 +322,12 @@ textarea:focus {
     border: 1px solid rgba(212, 175, 55, 0.2);
     border-radius: 8px;
     cursor: pointer;
-    transition: all var(--transition-medium);
+    transition: all var(--transition-fast);
     padding: 8px;
     z-index: 1001;
+    /* Optimisation performances */
+    will-change: transform, background-color;
+    backface-visibility: hidden;
 }
 
 .mobile-menu-toggle:hover {
@@ -297,24 +341,27 @@ textarea:focus {
     height: 2px;
     background: var(--color-dark);
     margin: 2px 0;
-    transition: all var(--transition-medium);
+    transition: all var(--transition-fast);
     border-radius: 1px;
+    /* Optimisation performances */
+    will-change: transform, opacity;
 }
 
-/* Animation du hamburger quand le menu est ouvert */
+/* Animation du hamburger quand le menu est ouvert - optimisée */
 .mobile-menu-toggle.active .hamburger-bar:nth-child(1) {
     transform: rotate(45deg) translate(5px, 5px);
 }
 
 .mobile-menu-toggle.active .hamburger-bar:nth-child(2) {
     opacity: 0;
+    transform: scale(0);
 }
 
 .mobile-menu-toggle.active .hamburger-bar:nth-child(3) {
     transform: rotate(-45deg) translate(7px, -6px);
 }
 
-/* Overlay pour assombrir l'arrière-plan */
+/* Overlay pour assombrir l'arrière-plan - optimisé */
 .mobile-menu-overlay {
     position: fixed;
     top: 0;
@@ -324,8 +371,11 @@ textarea:focus {
     background: rgba(0, 0, 0, 0.5);
     opacity: 0;
     visibility: hidden;
-    transition: all var(--transition-medium);
+    transition: all var(--transition-fast);
     z-index: 999;
+    /* Optimisation performances */
+    will-change: opacity, visibility;
+    backdrop-filter: blur(2px);
 }
 
 .mobile-menu-overlay.active {
@@ -514,7 +564,9 @@ textarea:focus {
         radial-gradient(circle at 25% 25%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
         radial-gradient(circle at 75% 75%, rgba(244, 208, 63, 0.03) 0%, transparent 50%),
         url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4af37' fill-opacity='0.02'%3E%3Cpath d='M60 60m-30 0a30 30 0 1 1 60 0a30 30 0 1 1 -60 0'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    animation: heroParallax 20s ease-in-out infinite;
+    animation: heroParallax 12s ease-in-out infinite;
+    /* Optimisation performances */
+    will-change: transform;
 }
 
 .hero::after {
@@ -529,7 +581,9 @@ textarea:focus {
         rgba(212, 175, 55, 0.02), 
         transparent);
     transform: rotate(12deg);
-    animation: floatSlow 15s ease-in-out infinite;
+    animation: floatSlow 10s ease-in-out infinite;
+    /* Optimisation performances */
+    will-change: transform;
 }
 
 .hero .container {
@@ -544,8 +598,10 @@ textarea:focus {
 }
 
 .hero-content {
-    animation: slideInLeft var(--transition-slow) 0.2s both;
+    animation: slideInLeft var(--transition-medium) 0.1s both;
     position: relative;
+    /* Optimisation performances */
+    will-change: transform, opacity;
 }
 
 .hero-content::before {
@@ -557,7 +613,7 @@ textarea:focus {
     height: 100px;
     background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
     border-radius: 3px;
-    animation: slideInLeft var(--transition-slow) 0.8s both;
+    animation: slideInLeft var(--transition-medium) 0.4s both;
 }
 
 .hero-content h2 {
@@ -577,6 +633,8 @@ textarea:focus {
     text-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     position: relative;
     letter-spacing: -1px;
+    /* Optimisation performances */
+    will-change: transform;
 }
 
 .hero-content h2::after {
@@ -588,7 +646,7 @@ textarea:focus {
     height: 5px;
     background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
     border-radius: 3px;
-    animation: expandWidth 1.5s ease 1s both;
+    animation: expandWidth 1s var(--ease-power) 0.6s both;
 }
 
 .hero-content p {
@@ -615,7 +673,7 @@ textarea:focus {
 
 .hero-image {
     text-align: center;
-    animation: slideInRight var(--transition-slow) 0.4s both;
+    animation: slideInRight var(--transition-medium) 0.2s both;
     position: relative;
 }
 
@@ -630,7 +688,9 @@ textarea:focus {
     border-radius: 30px;
     opacity: 0.08;
     z-index: -1;
-    animation: gentleFloat 8s ease-in-out infinite;
+    animation: gentleFloat 6s ease-in-out infinite;
+    /* Optimisation performances */
+    will-change: transform;
 }
 
 .hero-img {
@@ -643,16 +703,19 @@ textarea:focus {
         0 30px 60px rgba(0, 0, 0, 0.15),
         0 12px 30px rgba(212, 175, 55, 0.1);
     transition: all var(--transition-medium);
-    animation: fadeInScale 1s ease 0.6s both;
+    animation: fadeInScale 0.6s var(--ease-power) 0.4s both;
     position: relative;
     z-index: 2;
+    /* Optimisation performances */
+    will-change: transform, box-shadow;
+    backface-visibility: hidden;
 }
 
 .hero-img:hover {
-    transform: scale(1.03) translateY(-8px) rotate(1deg);
+    transform: scale(1.02) translateY(-5px) rotate(0.5deg);
     box-shadow: 
-        0 40px 80px rgba(0, 0, 0, 0.2),
-        0 16px 40px rgba(212, 175, 55, 0.2);
+        0 35px 70px rgba(0, 0, 0, 0.18),
+        0 14px 35px rgba(212, 175, 55, 0.15);
 }
 
 /* Badge de confiance sur l'image */
@@ -885,7 +948,7 @@ textarea:focus {
     color: var(--color-dark);
     font-weight: 700;
     position: relative;
-    animation: slideInUp var(--transition-slow);
+    animation: slideInUp var(--transition-medium);
 }
 
 .about h2::after {
@@ -898,7 +961,7 @@ textarea:focus {
     height: 4px;
     background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
     border-radius: 2px;
-    animation: expandWidth 1s ease 0.5s both;
+    animation: expandWidth 0.8s var(--ease-power) 0.3s both;
 }
 
 .about-content {
@@ -914,7 +977,7 @@ textarea:focus {
 .about-text {
     font-size: 1.1rem;
     line-height: 1.8;
-    animation: slideInLeft var(--transition-slow) 0.3s both;
+    animation: slideInLeft var(--transition-medium) 0.2s both;
     position: relative;
     padding-top: 1rem;
 }
@@ -928,7 +991,7 @@ textarea:focus {
     height: 50px;
     background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
     border-radius: 2px;
-    animation: slideInLeft var(--transition-slow) 0.6s both;
+    animation: slideInLeft var(--transition-medium) 0.4s both;
 }
 
 .about-text p {
@@ -966,11 +1029,13 @@ textarea:focus {
     background: var(--color-white);
     border-radius: 10px;
     box-shadow: var(--shadow-light);
-    transition: all var(--transition-medium);
+    transition: all var(--transition-fast);
     cursor: default;
     position: relative;
     overflow: hidden;
     font-size: 0.95rem;
+    /* Optimisation performances */
+    will-change: transform, box-shadow;
 }
 
 .about-text li::before {
@@ -981,12 +1046,12 @@ textarea:focus {
     width: 0;
     height: 100%;
     background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), rgba(244, 208, 63, 0.08));
-    transition: width var(--transition-medium);
+    transition: width var(--transition-fast);
     border-radius: 10px 0 0 10px;
 }
 
 .about-text li:hover {
-    transform: translateX(5px) translateY(-2px);
+    transform: translateX(3px) translateY(-1px);
     box-shadow: var(--shadow-medium);
 }
 
@@ -995,7 +1060,7 @@ textarea:focus {
 }
 
 .about-image {
-    animation: slideInRight var(--transition-slow) 0.5s both;
+    animation: slideInRight var(--transition-medium) 0.3s both;
     position: relative;
     display: flex;
     justify-content: center;
@@ -1014,7 +1079,9 @@ textarea:focus {
     border-radius: 20px;
     z-index: -1;
     opacity: 0.08;
-    animation: float 6s ease-in-out infinite;
+    animation: float 4s ease-in-out infinite;
+    /* Optimisation performances */
+    will-change: transform;
 }
 
 .about-img {
@@ -1027,12 +1094,15 @@ textarea:focus {
     transition: all var(--transition-medium);
     position: relative;
     z-index: 2;
-    animation: fadeInScale 1s ease 0.8s both;
+    animation: fadeInScale 0.6s var(--ease-power) 0.5s both;
+    /* Optimisation performances */
+    will-change: transform, box-shadow;
+    backface-visibility: hidden;
 }
 
 .about-img:hover {
-    transform: scale(1.02) translateY(-5px);
-    box-shadow: 0 20px 40px rgba(212, 175, 55, 0.25);
+    transform: scale(1.01) translateY(-3px);
+    box-shadow: 0 18px 35px rgba(212, 175, 55, 0.2);
 }
 
 /* Animation pour l'image */
@@ -1227,10 +1297,13 @@ textarea:focus {
         justify-content: flex-start;
         align-items: stretch;
         padding: 80px 0 20px;
-        transition: left var(--transition-medium);
+        transition: left var(--transition-fast);
         z-index: 1000;
         box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
         border-right: 1px solid rgba(212, 175, 55, 0.2);
+        /* Optimisation performances */
+        will-change: left;
+        transform: translateZ(0);
     }
     
     /* Menu ouvert */
@@ -1259,13 +1332,15 @@ textarea:focus {
         font-size: 1.1rem;
         border-radius: 0;
         border-bottom: 1px solid rgba(212, 175, 55, 0.1);
-        transition: all var(--transition-medium);
+        transition: all var(--transition-fast);
+        /* Optimisation performances */
+        will-change: transform, background-color;
     }
     
     .nav-menu a:hover {
         background: rgba(212, 175, 55, 0.1);
-        transform: translateX(10px);
-        padding-left: 2.5rem;
+        transform: translateX(8px);
+        padding-left: 2.2rem;
     }
     
     /* Sélecteur de langue dans le menu mobile */
